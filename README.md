@@ -38,13 +38,16 @@ Se utiliza una estrategia de **Doble Base de Datos (MariaDB)** para una mayor se
 
 ### Backend y Despliegue
 
-| Rol               | Tecnología | Propósito Específico                                                     |
-| :---------------- | :--------- | :----------------------------------------------------------------------- |
-| **Plataforma**    | Node.js    | Entorno de ejecución asíncrono.                                          |
-| **Framework**     | Express.js | Creación de la API REST.                                                 |
-| **Base de Datos** | MariaDB    | Sistema de gestión de bases de datos relacional.                         |
-| **Driver/ORM**    | `mariadb`  | Conexión directa y uso de Pools para la BD.                              |
-| **Hosting**       | Vercel     | Despliegue como _Serverless Function_ y _Hosting_ estático del Frontend. |
+| Rol               | Tecnología    | Propósito Específico                                                     |
+| :---------------- | :------------ | :----------------------------------------------------------------------- |
+| **Plataforma**    | Node.js       | Entorno de ejecución asíncrono.                                          |
+| **Framework**     | Express.js    | Creación de la API REST.                                                 |
+| **Base de Datos** | MariaDB       | Sistema de gestión de bases de datos relacional.                         |
+| **Driver/ORM**    | `mariadb`     | Conexión directa y uso de Pools para la BD.                              |
+| **Hosting**       | Vercel        | Despliegue como _Serverless Function_ y _Hosting_ estático del Frontend. |
+| **Hash**          | Bcrypt        | Hash de password para la seguridad en la BD.                             |
+| **Auth**          | JWT           | Envio de informacion sencible del usuario.                               |
+| **Session**       | Cookie-Parser | Sesiones activas para los usuarios.                                      |
 
 ### Frontend
 
@@ -63,7 +66,7 @@ Se utiliza una estrategia de **Doble Base de Datos (MariaDB)** para una mayor se
 
 1.  Clona este repositorio:
     ```bash
-    git clone [https://github.com/IngMiranda/IngenieriaSoftware.git](https://github.com/IngMiranda/IngenieriaSoftware.git) IngenieriaSoftware
+    git clone https://github.com/IngMiranda/IngenieriaSoftware.git
     cd IngenieriaSoftware
     ```
 2.  Instala las dependencias del Backend:

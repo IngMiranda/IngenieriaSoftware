@@ -21,9 +21,9 @@ class QueryHandler {
                 return result;
             } else {
                 return {
-                    success: result.affectedRows > 0 || result.warningStatus === 0,
+                    success: result.affectedRows > 0 ?? result.warningStatus === 0,
                     affectedRows: result.affectedRows,
-                    insertId: result.insertId || null // esta y la anterior ya nos la da mariadb
+                    insertId: result.insertId ?? null // esta y la anterior ya nos la da mariadb
                 };
             }
 
