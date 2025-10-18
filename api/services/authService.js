@@ -6,9 +6,15 @@ require('dotenv').config();
 
 // Cabe aclarar que todo esto hay que modificarlo y completarlo segun lo que nos pase el equipo de DB
 
+/**
+ * 
+ * @param {string} username 
+ * @param {string} password 
+ * @returns 
+ */
 exports.userLogin = async (username, password) => {
     try {
-        const sql = 'SELECT id, username, password_hash FROM Users WHERE username = ?';
+        const sql = 'SELECT id, username, password_hash, "role" as role FROM Users WHERE username = ?';
         const results = await QueryHandler.execute(sql, [username], 'auth');
 
         if (results.length === 0) {
@@ -25,7 +31,7 @@ exports.userLogin = async (username, password) => {
         }
 
         const token = jwt.sign(
-            { UserId: user.id, username: user.username },
+            { UserId: user.id, username: user.username, role: user.role },
             process.env.JWT_SECRET,
             { expiresIn: '1h' }
         );
@@ -39,6 +45,11 @@ exports.userLogin = async (username, password) => {
     }
 }
 
+/** 
+ * @param {string} username 
+ * @param {string} password 
+ * @returns 
+ */
 exports.userCreate = async (username, password) => {
     try {
         const saltRounds = parseInt(process.env.HASH_ROUNDS);
@@ -48,7 +59,14 @@ exports.userCreate = async (username, password) => {
         
         if (result.success) {
             Logger.info(`User ${username} created successfully`);
-            return { success: true, userId: result.insertId.toString() };
+
+            const token = jwt.sign(
+                { UserId: result.id, username: username, role: 'user' },
+                process.env.JWT_SECRET,
+                { expiresIn: '1h' }
+            );
+
+            return { success: true, token, userId: result.insertId.toString() };
         } else {
             Logger.warn(`User creation failed for ${username}`);
             return { success: false, message: 'User creation failed' };

@@ -12,8 +12,12 @@ exports.userLogin = async (req, res) => {
     try {
         const result = await authService.userLogin(username, password);
         if (result.success) {
-            // Aquí puedes generar un token JWT o una sesión
-            res.status(200).json({ message: 'Login successful', token: result.token, userId: result.UserId });
+            // quitar el token del return
+            res.cookie('access_token', result.token, 
+            { httpOnly: true, secure: process.env.NODE_ENV === 'production', sameSite: 'Strict' })
+            .status(200)
+            .json({ message: 'Login successful', userId: result.UserId, username: username, token: result.token });
+
         } else {
             res.status(401).json({ message: result.message });
         }
@@ -34,7 +38,12 @@ exports.userCreate = async (req, res) => {
     try {
         const result = await authService.userCreate(username, password);
         if (result.success) {
-            return { success: true, message: 'User created successfully', userId: result.userId, username: username };
+            
+            res.cookie('access_token', result.token, 
+            { httpOnly: true, secure: process.env.NODE_ENV === 'production', sameSite: 'Strict' })
+            .status(201)
+            .json({ message: 'User created successfully', userId: result.userId, username: username,  token: result.token });
+
         } else {
             return res.status(400).json({ message: result.message });
         }
